@@ -1,12 +1,15 @@
 
 import csv
-import requests
 from googlesearch import search
 # from webbrowser import open
 
 # Aprire il file CSV in modalità lettura e scrittura
 
 links = []
+
+with open('parsed.html', 'a') as f:
+            f.write("<table>")
+
 
 with open('nomi_aziende.csv') as csvfile:
 
@@ -17,6 +20,10 @@ with open('nomi_aziende.csv') as csvfile:
     
     # Saltare l'intestazione
     next(reader, None)
+    
+    
+    with open('parsed.html', 'a') as f:
+            f.write("<table border=\"1\">")
 
     # Iterare sulle righe del file CSV
     for row in reader:
@@ -31,40 +38,32 @@ with open('nomi_aziende.csv') as csvfile:
         
         row=[azienda]
         
-        for url in search(query, num=3, stop=1):
+        for url in search(query, num=1, stop=3):
             # Aggiungere l'URL alla riga
+            print(url)
             row.append(url)
+        
+        while len(row)<4:
+            row.append("placeholder")
             
         # 'a' per append
         with open('parsed.csv', 'a', newline='') as output:
             writer = csv.writer(output, delimiter=',')
             writer.writerow(row)
-            
+        
+        with open('parsed.html', 'a') as f:
+            htmlstring=f'<tr>\
+                <td>{row[0][:70]}</td>\
+                <td><a target=\"_blank\" href=\"{row[1]}\">{row[1][:30]}</a></td>\
+                <td><a target=\"_blank\" href=\"{row[2]}\">{row[2][:30]}</a></td>\
+                <td><a target=\"_blank\" href=\"{row[3]}\">{row[3][:30]}</a></td>\
+            </tr>\n'
+            f.write(htmlstring)
 
         # Aprire la pagina di ricerca Google in un nuovo tab del browser
         # g_url = f"https://www.google.com/search?q={query}"
         # webbrowser.open(g_url)
-    
-exit(0)
-
-with open('parsed.csv') as csvfile:
-        
-    writer = csv.writer(csvfile, delimiter=',')
-
-        # Scrivere la riga aggiornata sul file CSV
-        # writer.writerow(row)
-        
-    
-
-
-# Funzione per trovare l'URL del sito web
-def trova_url_sito_web(query):
-
-    # Inviare la query di ricerca a Google
-    risposta = requests.get(f"https://www.google.com/search?q={query}")
-
-    # Trovare il primo link nei risultati di ricerca
-    url = re.findall(r"(?<=href=\").+?(?=\")", risposta.text)[0]
-
-    # Restituire l'URL
-    return url
+    with open('parsed.html', 'a') as f:
+        f.write("</table>")
+print("-"*20)
+print("FINE")

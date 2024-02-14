@@ -5,7 +5,7 @@ from googlesearch import search
 
 headerList = ['Azienda', 'link1', 'link2', 'link3']
   
-open CSV file and assign header 
+#open CSV file and assign header 
 with open("parsed.csv", 'w') as file: 
     dw = csv.DictWriter(file, delimiter=',',  
                         fieldnames=headerList) 

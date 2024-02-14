@@ -3,15 +3,16 @@ import csv
 from googlesearch import search
 # from webbrowser import open
 
-# Aprire il file CSV in modalità lettura e scrittura
+headerList = ['Azienda', 'link1', 'link2', 'link3']
+  
+# open CSV file and assign header 
+with open("parsed.csv", 'w') as file: 
+    dw = csv.DictWriter(file, delimiter=',',  
+                        fieldnames=headerList) 
+    dw.writeheader() 
 
-links = []
 
-with open('parsed.html', 'a') as f:
-            f.write("<table>")
-
-
-with open('nomi_aziende.csv') as csvfile:
+with open('nomi_aziende.csv', 'r') as csvfile:
 
     # Creare un lettore CSV
     reader = csv.reader(csvfile, delimiter=',')
@@ -24,6 +25,8 @@ with open('nomi_aziende.csv') as csvfile:
     
     with open('parsed.html', 'a') as f:
             f.write("<table border=\"1\">")
+            
+    
 
     # Iterare sulle righe del file CSV
     for row in reader:

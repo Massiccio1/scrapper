@@ -1,3 +1,6 @@
+copia il codice con `git clone https://github.com/Massiccio1/scrapper.git`
+
+
 nel terminale installa le librerie
 
 `pip install google`
